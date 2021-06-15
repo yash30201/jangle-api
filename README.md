@@ -1,6 +1,6 @@
 # API for Jangle realtime chat system
 
-**!!! WORK ON PROGRESS !!!**
+**!!! WORK IN PROGRESS !!!**
 
 This is the API for Jangle realtime chat system. This facilitates realtime private as well as global chatting with groups. It is built using Node.
 
