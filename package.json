@@ -1,0 +1,19 @@
+{
+  "name": "jangle-api",
+  "version": "1.0.0",
+  "description": "API for jangle chat system",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yash30201/jangle-api.git"
+  },
+  "author": "yash30201",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yash30201/jangle-api/issues"
+  },
+  "homepage": "https://github.com/yash30201/jangle-api#readme"
+}
