@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const decoder = require('./services/AuthTokenDecoder');
 require('dotenv').config();
 
 // Mongoose setup setup
@@ -28,7 +29,7 @@ app.use(cors({
     methods : ['GET', 'PUT', 'POST', 'DELETE']
 }));
 
-// This outputs colored logs as per the request/res code
+// This outputs coloured logs as per the request/res code
 app.use(morgan('dev'));
 
 // Body parsing 
@@ -44,11 +45,11 @@ const userRouter = require('./routers/userRouter');
 
 
 app.use('/',authRouter);
-app.use('/room', roomRouter);
-app.use('/user', userRouter);
+app.use('/room',decoder, roomRouter);
+app.use('/user',decoder, userRouter);
 
 
-// Final error handeller
+// Final error handler
 app.use('*', function(err, req, res, next){
     return res.status(404).json({
         success : false,
