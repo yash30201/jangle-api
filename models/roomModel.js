@@ -48,6 +48,22 @@ roomSchema.statics.getAllMyChatRooms = async function(userId){
     }
 }
 
+roomSchema.statics.socketMethod_getAllMyRooms = async function(userId){
+    try {
+        const rooms = await this.find({
+            userIds : {
+                $elemMatch : { $eq : userId}
+            }
+        },{
+            "_id" : 1
+        });
+
+        return rooms;
+    } catch (error) {
+        return [];
+    }
+}
+
 roomSchema.statics.getRoomById = async function(_id){
     try {
         const rooms = await this.aggregate([

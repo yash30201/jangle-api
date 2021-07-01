@@ -2,6 +2,13 @@ const router = require('express').Router();
 const { body } = require('express-validator');
 const authController = require('../controllers/AuthController');
 
+
+router.get(
+    '/',
+    (req, res) => {
+        return res.status(200).json({text : "Please login first"});
+    }
+);
 router.post(
     '/login',
     body('phoneNumber').isNumeric().custom(value => {

@@ -3,11 +3,14 @@ const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const decoder = require('./services/AuthTokenDecoder');
+const socketIo = require('socket.io');
+const webSockets = require('./services/WebSockets');
 require('dotenv').config();
 
 // Mongoose setup setup
-const CONNECTION_URL = `mongodb://${process.env.DB_URL}/${process.env.DB_NAME}`;
-console.log(CONNECTION_URL);
+const MONGODB_URL = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@jangledb.wsxym.mongodb.net/jangleDB?retryWrites=true&w=majority`;
+
+const CONNECTION_URL = `mongodb://localhost:27017/jangle`;
 mongoose.connect(CONNECTION_URL, {
     useNewUrlParser : true,
     useUnifiedTopology : true
@@ -62,6 +65,11 @@ app.use('*', function(err, req, res, next){
 const port = process.env.PORT || "5000";
 const server = require('http').createServer(app);
 server.listen(port);
+
+
+const WebSockets = new webSockets();
+global.io = socketIo(server);
+global.io.on('connection', WebSockets.connection);
 
 server.on('listening', () => {
     console.log(`Listening on port:: ${port}/`);
