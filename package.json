@@ -4,8 +4,6 @@
   "description": "API for jangle chat system",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "mymongo": "sudo systemctl $label mongod",
     "start": "node server.js"
   },
   "repository": {
