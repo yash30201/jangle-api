@@ -10,16 +10,16 @@ require('dotenv').config();
 // Mongoose setup setup
 const MONGODB_URL = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@jangledb.wsxym.mongodb.net/jangleDB?retryWrites=true&w=majority`;
 
-const CONNECTION_URL = `mongodb://localhost:27017/jangle`;
-mongoose.connect(CONNECTION_URL, {
+// const CONNECTION_URL = `mongodb://localhost:27017/jangle`;
+mongoose.connect(MONGODB_URL, {
     useNewUrlParser : true,
     useUnifiedTopology : true
 });
 
-mongoose.connection.on('connected', () => console.log('MongoDB connected!'));
-mongoose.connection.on('reconnected', () => console.log('MongoDB reconnected!'));
-mongoose.connection.on('disconnected', () => console.log('MongoDB disconnected!'));
-mongoose.connection.on('error', () => console.log('MongoDB cannot connect!'));
+// mongoose.connection.on('connected', () => console.log('MongoDB connected!'));
+// mongoose.connection.on('reconnected', () => console.log('MongoDB reconnected!'));
+// mongoose.connection.on('disconnected', () => console.log('MongoDB disconnected!'));
+// mongoose.connection.on('error', () => console.log('MongoDB cannot connect!'));
 
 
 // Middlewares
@@ -33,7 +33,7 @@ app.use(cors({
 }));
 
 // This outputs coloured logs as per the request/res code
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 // Body parsing 
 app.use(express.json());
@@ -68,9 +68,13 @@ server.listen(port);
 
 
 const WebSockets = new webSockets();
-global.io = socketIo(server);
+global.io = socketIo(server, {
+    cors: {
+        origin: "*",
+    }
+});
 global.io.on('connection', WebSockets.connection);
 
-server.on('listening', () => {
-    console.log(`Listening on port:: ${port}/`);
-});
+// server.on('listening', () => {
+//     console.log(`Listening on port:: ${port}/`);
+// });

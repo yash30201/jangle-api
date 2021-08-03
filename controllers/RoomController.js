@@ -57,7 +57,7 @@ const onPostMessage = async (req, res, next) => {
             postedByUser = req.userId
         );
 
-        // global.io.socker
+        // global.io.socket
         return res.status(200).json({success : true, post});
     } catch (error) {
         next(error);

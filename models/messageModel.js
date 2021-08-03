@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
+const roomModel = require('./roomModel');
 
 // const MESSAGE_TYPES = {
 //     TYPE_TEXT : "text",
@@ -37,9 +38,12 @@ const messageSchema = new mongoose.Schema(
 
 messageSchema.statics.createPost = async function(roomId, message, postedByUser){
     try {
+
         const post = await this.create({
             roomId, message, postedByUser, blueTicks : [{userId : postedByUser}]
         });
+
+        await roomModel.updateRoomTime(roomId);
 
         const result = await this.aggregate([
             { $match : {_id : post._id}},
@@ -85,7 +89,7 @@ messageSchema.statics.createPost = async function(roomId, message, postedByUser)
             }
         ]);
 
-        return result;
+        return result[0];
     } catch (error) {
         throw error;
     }
@@ -115,6 +119,7 @@ messageSchema.statics.recentMessages = async function(roomId, options){
         throw error;
     }
 };
+
 
 
 messageSchema.statics.markConversationAsRead = async function(roomId, loggedUserId){
@@ -151,6 +156,7 @@ messageSchema.statics.deleteMessageById = async function(_id, userId){
         throw error;
     }
 }
+
 
 
 const model = mongoose.model('message', messageSchema);

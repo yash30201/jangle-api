@@ -15,7 +15,7 @@ const onLoginUser = async (req, res, next) => {
         // So now we generate jwt token
         const payload = {userId : user._id};
         const authToken = jwt.sign(payload,process.env.JWT_SECRET_KEY);
-        return res.status(200).json({success : true, authToken, user});
+        return res.status(200).json({success : true, authToken, userId : user._id});
     } catch (error) {
         next(error);
     }
