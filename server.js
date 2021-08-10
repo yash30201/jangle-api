@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const decoder = require('./services/AuthTokenDecoder');
 const socketIo = require('socket.io');
 const webSockets = require('./services/WebSockets');
-// require('dotenv').config();
+require('dotenv').config();
 
 // Mongoose setup setup
 const MONGODB_URL = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@jangledb.wsxym.mongodb.net/jangleDB?retryWrites=true&w=majority`;
