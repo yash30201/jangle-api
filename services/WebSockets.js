@@ -48,42 +48,48 @@ class WebSockets {
             }
         });
 
-        socket.on('join room', (room,myUserId, otherUserId) => {
+        socket.on('join room', (roomId,myUserId, otherUserId) => {
             // Used when new conversation is created in real time
-
             const userSockets = this.users.filter((user) => {
                 return (user.socketId !== socket.id && (user.userId === otherUserId || user.userId === myUserId));
             });
             // console.log('Join room');
+            // console.log(myUserId + ' ' + otherUserId);
             // console.log(userSockets);
             userSockets.map((userInfo) => {
-                const socketConnection = global.io.sockets.sockets.get(userInfo.socketId);
-                if (socketConnection) socketConnection.join(room);
+                const socketConnection = global.io.of("/").connected[userInfo.socketId];
+                if (socketConnection){
+                    socketConnection.join(roomId);
+                }
             })
-            socket.join(room);
+            socket.join(roomId);
+            socket.emit('new conversation');
         });
 
         socket.on('leave room', (room) => {
-            // Used when an existing conversation is completely in real time
+            // Used when an existing conversation is completely deleted in real time
 
             // Since there is no provision to delete conversation for now, hence is trivial.
             socket.leave(room);
         });
 
         socket.on('send message', (room, data) => {
+            // console.log('New message');
+            // console.log(data);
             // Considering the message has already been added in the database
             socket.to(room).emit('new message', data);
         });
 
         socket.on('new conversation', (userIds) => {
+            // console.log('New conversation : ');
+            // console.log(userIds);
             const userSockets = this.users.filter((user) => {
                 return (user.socketId !== socket.id && userIds.includes(user.userId));
             });
             // console.log('New conversation');
             // console.log(userSockets)
             userSockets.map((userInfo) => {
-                const socketConnection = global.io.sockets.sockets.get(userInfo.socketId);
-                if (socketConnection) socketConnection.emit('new conversation');
+                socket.to(userInfo.socketId).emit('new conversation');
             })
         });
 
